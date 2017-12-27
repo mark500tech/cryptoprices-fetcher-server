@@ -1,6 +1,6 @@
-const express = require('express');
-const constants = require('./constants');
-const dataHandler = require('./dataHandler');
+import express from 'express';
+import * as constants from './constants';
+import { downloadAndUnzip } from './dataHandler';
 
 const app = express();
 const port = 8000;
@@ -10,4 +10,4 @@ console.log("server listening to port: ", port);
 /////////////////////////////////////////////////////////////////////////
 
 // Functions
-setInterval(dataHandler.downloadAndUnzip, 5000);
+setInterval(downloadAndUnzip, 5000);

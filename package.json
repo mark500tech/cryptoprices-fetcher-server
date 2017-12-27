@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --exec babel-node index.js",
+    "debug": "npm start -- --inspect"
   },
   "author": "Mark Khotin",
   "license": "ISC",
   "dependencies": {
     "adm-zip": "^0.4.7",
-    "axios": "^0.17.1"
+    "axios": "^0.17.1",
+    "nodemon": "^1.14.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.26.0"
   }
 }
