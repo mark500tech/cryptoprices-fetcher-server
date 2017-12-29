@@ -1,6 +1,7 @@
 import {get} from 'http';
 import {createWriteStream} from 'fs';
 import AdmZip from 'adm-zip';
+import {sortBy} from 'lodash';
 
 import {DATA_FOLDER, DATA_PATH, DOWNLOAD_DATA_URL} from "../constants";
 import {parseRatesFile} from "./parser";
@@ -24,4 +25,26 @@ export const createData = (resObject) => {
     fs.unlink(dest); // Delete the file async. (But we don't check the result)
     console.log('Error while downloading data: ' + err.message);
   });
+};
+
+// Returns 2 sorted arrays - send and receive according to cryptocurrency id
+export const getSortedSendReceiveArrays = (dataArray, cryptoId) => {
+  let send = [];
+  let receive = [];
+
+  dataArray.forEach((record => {
+      if (record.fromId === cryptoId) {
+        send.push(record);
+      }
+
+      if (record.toId === cryptoId) {
+        receive.push(record);
+      }
+    })
+  );
+
+  send = sortBy(send, (item) => item.receive).reverse();
+  receive = sortBy(receive, (item) => item.send);
+
+  return {send, receive};
 };

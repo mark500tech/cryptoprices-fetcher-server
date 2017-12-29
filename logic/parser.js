@@ -54,7 +54,9 @@ export const parseRatesFile = () => {
         (rate[0] === ID_ADV_USD && CRYPTOS_ID_ARRAY.includes(rate[1]))) {
       rates[i++] = {
         from: CURRENCIES_OBJECT[rate[0]],
+        fromId: rate[0],
         to: CURRENCIES_OBJECT[rate[1]],
+        toId: rate[1],
         exchange: exchanges[rate[2]],
         send: Number(rate[3]),
         receive: Number(rate[4]),
