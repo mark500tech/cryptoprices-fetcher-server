@@ -1,7 +1,8 @@
 import {readFileSync} from 'fs';
-import {CURRENCIES_PATH} from "./constants";
+import {set} from 'lodash';
+import {CURRENCIES_PATH, EXCHANGES_PATH, RATES_PATH} from "./constants";
 
-export const splitFileToMatrix = (filePath) => {
+const splitFileToMatrix = (filePath) => {
   // Splitting file to array of lines
   const fileArray = readFileSync(filePath).toString().split('\n');
   // Splitting every line to array of data
@@ -12,16 +13,44 @@ export const splitFileToMatrix = (filePath) => {
   return fileMatrix;
 };
 
-export const parseCurrenciesFile = () => {
+const parseCurrenciesFile = () => {
   const fileArray = splitFileToMatrix(CURRENCIES_PATH);
-  const currencies = [];
+  const currencies = {};
 
-  fileArray.forEach((currency, index) => {
-    currencies[index] = {
-      id: currency[0],
-      title: currency[2]
-    }
+  fileArray.forEach((currency) => {
+    set(currencies, currency[0], currency[2])
   });
 
   return currencies;
+};
+
+const parseExchangesFile = () => {
+  const fileArray = splitFileToMatrix(EXCHANGES_PATH);
+  const exchanges = {};
+
+  fileArray.forEach((exchange) => {
+    set(exchanges, exchange[0], exchange[1]);
+  });
+
+  return exchanges;
+};
+
+export const parseRatesFile = () => {
+  const currencies = parseCurrenciesFile();
+  const exchanges = parseExchangesFile();
+  const fileArray = splitFileToMatrix(RATES_PATH);
+  const rates = [];
+
+  fileArray.forEach((rate, index) => {
+    rates[index] = {
+      from: currencies[rate[0]],
+      to: currencies[rate[1]],
+      exchange: exchanges[rate[2]],
+      send: Number(rate[3]),
+      receive: Number(rate[4]),
+      reserve: Number(rate[5])
+    }
+  });
+
+  return rates;
 };
