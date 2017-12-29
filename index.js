@@ -1,5 +1,4 @@
 import express from 'express';
-import * as constants from './constants';
 import { downloadAndUnzip } from './dataHandler';
 
 const app = express();
