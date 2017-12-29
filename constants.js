@@ -7,14 +7,26 @@ export const RATES_PATH = `${DATA_FOLDER}/bm_rates.dat`;
 export const MIN_USD_EXHANGE_SUM = 500;
 
 // Currency IDs
-export const ID_ETH = '139';
-export const ID_LTC = '99';
-export const ID_DASH = '140';
 export const ID_ADV_USD = '88';
-export const CRYPTOS_ID_ARRAY = [ID_ETH, ID_LTC, ID_DASH];
+export const ID_LTC = '99';
+export const ID_ETH = '139';
+export const ID_DASH = '140';
+export const ID_XMR = '149';
+export const ID_ETC = '160';
+export const ID_XRP = '161';
+export const ID_ZEC = '162';
+export const ID_BCH = '172';
+export const CRYPTOS_ID_ARRAY = [
+  ID_ETH, ID_LTC, ID_DASH, ID_XMR, ID_ETC, ID_XRP, ID_ZEC, ID_BCH
+];
 export const CURRENCIES_OBJECT = {
-  [ID_ETH]: 'ETH',
-  [ID_LTC]: 'LTC',
-  [ID_DASH]: 'DASH',
   [ID_ADV_USD]: 'Advanced Cash $',
+  [ID_LTC]: 'Litecoin',
+  [ID_ETH]: 'Etherium',
+  [ID_DASH]: 'Dash',
+  [ID_XMR]: 'Monero',
+  [ID_ETC]: 'Etherium Classic',
+  [ID_XRP]: 'Ripple',
+  [ID_ZEC]: 'ZCash',
+  [ID_BCH]: 'BitcoinCash',
 };

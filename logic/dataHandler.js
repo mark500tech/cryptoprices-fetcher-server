@@ -87,7 +87,7 @@ const getFirstItemWithNeededReserve = (exchangeItems) => {
 
 // Builds final data of pairs to exchange
 export const buildExchangePairs = (dataArray) => {
-  const pairs = [];
+  let pairs = [];
 
   CRYPTOS_ID_ARRAY.forEach((cryptoId) => {
     const arraysObject = getSortedSendReceiveArrays(dataArray, cryptoId);
@@ -96,10 +96,12 @@ export const buildExchangePairs = (dataArray) => {
     // Second step is sell crypto for ADV_USD
     const secondStep = getFirstItemWithNeededReserve(arraysObject.send);
     // Difference in percents after buying crypto and selling
-    const difference = ((secondStep.receive - firstStep.send) / firstStep.send * 100).toFixed(2);
+    const difference = parseFloat(((secondStep.receive - firstStep.send) / firstStep.send * 100).toFixed(2));
 
-    pairs.push({firstStep, secondStep, difference})
+    pairs.push({firstStep, secondStep, difference});
   });
 
-  return sortBy(pairs, (pair) => pair.difference);
+  pairs = sortBy(pairs, (pair) => pair.difference).reverse();
+
+  return pairs;
 };
