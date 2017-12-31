@@ -1,5 +1,5 @@
 import express from 'express';
-import { createData } from './logic/dataHandler';
+import { createData, createDataForLoop } from './logic/dataHandler';
 
 const app = express();
 const port = 8000;
@@ -17,3 +17,5 @@ app.use((req, res, next) => {
 app.get('/data', (req, res) => {
   createData(res);
 });
+
+setInterval(createDataForLoop, 5000);

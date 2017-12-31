@@ -1,5 +1,5 @@
 import {get} from 'http';
-import {createWriteStream} from 'fs';
+import {createWriteStream, unlink} from 'fs';
 import AdmZip from 'adm-zip';
 import {sortBy} from 'lodash';
 
@@ -34,7 +34,29 @@ export const createData = (resObject) => {
       file.close();  // close() is async, call cb after close completes.
     });
   }).on('error', function (err) { // Handle errors
-    fs.unlink(dest); // Delete the file async. (But we don't check the result)
+    unlink(DATA_PATH); // Delete the file async. (But we don't check the result)
+    console.log('Error while downloading data: ' + err.message);
+  });
+};
+
+export const createDataForLoop = () => {
+  // Downloading
+  const file = createWriteStream(DATA_PATH);
+  const request = get(DOWNLOAD_DATA_URL, function (response) {
+    response.pipe(file);
+    file.on('finish', function () {
+      // Unzipping
+      const zip = AdmZip(DATA_PATH);
+      zip.extractAllTo(DATA_FOLDER, true);
+      // Parsing file to data array
+      const dataArray = parseRatesFile();
+      // Sorting and building pairs
+      const pairsDataArray = buildExchangePairs(dataArray);
+
+      file.close();  // close() is async, call cb after close completes.
+    });
+  }).on('error', function (err) { // Handle errors
+    unlink(DATA_PATH); // Delete the file async. (But we don't check the result)
     console.log('Error while downloading data: ' + err.message);
   });
 };
@@ -97,6 +119,12 @@ export const buildExchangePairs = (dataArray) => {
     const secondStep = getFirstItemWithNeededReserve(arraysObject.send);
     // Difference in percents after buying crypto and selling
     const difference = parseFloat(((secondStep.receive - firstStep.send) / firstStep.send * 100).toFixed(2));
+
+    if (difference > 0) {
+      console.log(`Exchange found!
+      Buy: ${firstStep.to} price: ${firstStep.send} exchange: ${firstStep.exchange}
+      Sell: ${secondStep.from} price: ${secondStep.receive} exchange: ${secondStep.exchange}`);
+    }
 
     pairs.push({firstStep, secondStep, difference});
   });

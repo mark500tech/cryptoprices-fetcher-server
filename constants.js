@@ -4,7 +4,7 @@ export const DATA_PATH = `${DATA_FOLDER}/data.zip`;
 export const CURRENCIES_PATH = `${DATA_FOLDER}/bm_cy.dat`;
 export const EXCHANGES_PATH = `${DATA_FOLDER}/bm_exch.dat`;
 export const RATES_PATH = `${DATA_FOLDER}/bm_rates.dat`;
-export const MIN_USD_EXHANGE_SUM = 500;
+export const MIN_USD_EXHANGE_SUM = 100;
 
 // Currency IDs
 export const ID_ADV_USD = '88';
