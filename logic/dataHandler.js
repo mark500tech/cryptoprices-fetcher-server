@@ -80,6 +80,12 @@ const getSortedSendReceiveArrays = (dataArray, cryptoId) => {
   send = sortBy(send, (item) => item.receive).reverse();
   receive = sortBy(receive, (item) => item.send);
 
+  if (!send.length) {
+    console.log("Send array is empty for currency ID: ", cryptoId);
+  } else if (!receive.length) {
+    console.log("Receive array is empty for currency ID: ", cryptoId);
+  }
+
   return {send, receive};
 };
 
