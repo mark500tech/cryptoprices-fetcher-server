@@ -19,15 +19,15 @@ export const createData = (resObject) => {
   const file = createWriteStream(DATA_PATH);
   const request = get(DOWNLOAD_DATA_URL, function (response) {
     response.pipe(file);
-    file.on('finish', function () {
+    file.on('finish', async function () {
       console.log(new Date() + ' Data file downloaded successfully!');
-      // Unzipping
-      const zip = AdmZip(DATA_PATH);
-      zip.extractAllTo(DATA_FOLDER, true);
-      // Parsing file to data array
-      const dataArray = parseRatesFile();
-      // Sorting and building pairs
-      const pairsDataArray = buildExchangePairs(dataArray);
+        // Unzipping
+        const zip = AdmZip(DATA_PATH);
+        zip.extractAllTo(DATA_FOLDER, true);
+        // Parsing file to data array
+        const dataArray = await parseRatesFile();
+        // Sorting and building pairs
+        const pairsDataArray = buildExchangePairs(dataArray);
       // Sending pairs to client
       resObject.send(pairsDataArray);
 
