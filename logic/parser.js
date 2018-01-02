@@ -1,5 +1,7 @@
-import {readFileSync} from 'fs';
+import {readFileSync, writeFileSync, createReadStream, createWriteStream} from 'fs';
 import {set} from 'lodash';
+import { decodeStream, encodeStream } from 'iconv-lite';
+import path from 'path';
 import {
   CRYPTOS_ID_ARRAY,
   CURRENCIES_OBJECT,
@@ -8,15 +10,22 @@ import {
   ID_ADV_USD,
   RATES_PATH} from "../constants";
 
+const handleFile = (fileData) => {
+  return fileData.split('\n').map((line) => line.split(';'));
+};
+
 const splitFileToMatrix = (filePath) => {
   // Splitting file to array of lines
-  const fileArray = readFileSync(filePath).toString().split('\n');
-  // Splitting every line to array of data
-  const fileMatrix = fileArray.map((line) => {
-    return line.toString().split(';');
-  });
-
-  return fileMatrix;
+  let fileData = '';
+  const decodingParser = decodeStream('win1251');
+  const encodingParser = encodeStream('utf8');
+  encodingParser.on('data', (chunk) => fileData += chunk.toString());
+  return new Promise((resolve, reject) => {
+    encodingParser.on('finish', () => resolve(handleFile(fileData)));
+    createReadStream(path.join(__dirname, '..', filePath))
+      .pipe(decodingParser)
+      .pipe(encodingParser);
+  })
 };
 
 const parseCurrenciesFile = () => {
@@ -30,8 +39,8 @@ const parseCurrenciesFile = () => {
   return currencies;
 };
 
-const parseExchangesFile = () => {
-  const fileArray = splitFileToMatrix(EXCHANGES_PATH);
+const parseExchangesFile = async () => {
+  const fileArray = await splitFileToMatrix(EXCHANGES_PATH);
   const exchanges = {};
 
   fileArray.forEach((exchange) => {
@@ -41,9 +50,9 @@ const parseExchangesFile = () => {
   return exchanges;
 };
 
-export const parseRatesFile = () => {
-  const exchanges = parseExchangesFile();
-  const fileArray = splitFileToMatrix(RATES_PATH);
+export const parseRatesFile = async () => {
+  const exchanges = await parseExchangesFile();
+  const fileArray = await splitFileToMatrix(RATES_PATH);
   const rates = [];
   let i = 0;
 

@@ -19,15 +19,15 @@ export const createData = (resObject) => {
   const file = createWriteStream(DATA_PATH);
   const request = get(DOWNLOAD_DATA_URL, function (response) {
     response.pipe(file);
-    file.on('finish', function () {
+    file.on('finish', async function () {
       console.log(new Date() + ' Data file downloaded successfully!');
-      // Unzipping
-      const zip = AdmZip(DATA_PATH);
-      zip.extractAllTo(DATA_FOLDER, true);
-      // Parsing file to data array
-      const dataArray = parseRatesFile();
-      // Sorting and building pairs
-      const pairsDataArray = buildExchangePairs(dataArray);
+        // Unzipping
+        const zip = AdmZip(DATA_PATH);
+        zip.extractAllTo(DATA_FOLDER, true);
+        // Parsing file to data array
+        const dataArray = await parseRatesFile();
+        // Sorting and building pairs
+        const pairsDataArray = buildExchangePairs(dataArray);
       // Sending pairs to client
       resObject.send(pairsDataArray);
 
@@ -44,12 +44,12 @@ export const createDataForLoop = () => {
   const file = createWriteStream(DATA_PATH);
   const request = get(DOWNLOAD_DATA_URL, function (response) {
     response.pipe(file);
-    file.on('finish', function () {
+    file.on('finish', async function () {
       // Unzipping
       const zip = AdmZip(DATA_PATH);
       zip.extractAllTo(DATA_FOLDER, true);
       // Parsing file to data array
-      const dataArray = parseRatesFile();
+      const dataArray = await parseRatesFile();
       // Sorting and building pairs
       const pairsDataArray = buildExchangePairs(dataArray);
 
@@ -79,6 +79,12 @@ const getSortedSendReceiveArrays = (dataArray, cryptoId) => {
 
   send = sortBy(send, (item) => item.receive).reverse();
   receive = sortBy(receive, (item) => item.send);
+
+  if (!send.length) {
+    console.log("Send array is empty for currency ID: ", cryptoId);
+  } else if (!receive.length) {
+    console.log("Receive array is empty for currency ID: ", cryptoId);
+  }
 
   return {send, receive};
 };
