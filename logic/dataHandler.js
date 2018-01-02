@@ -44,12 +44,12 @@ export const createDataForLoop = () => {
   const file = createWriteStream(DATA_PATH);
   const request = get(DOWNLOAD_DATA_URL, function (response) {
     response.pipe(file);
-    file.on('finish', function () {
+    file.on('finish', async function () {
       // Unzipping
       const zip = AdmZip(DATA_PATH);
       zip.extractAllTo(DATA_FOLDER, true);
       // Parsing file to data array
-      const dataArray = parseRatesFile();
+      const dataArray = await parseRatesFile();
       // Sorting and building pairs
       const pairsDataArray = buildExchangePairs(dataArray);
 
