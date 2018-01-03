@@ -2,7 +2,7 @@ import express from 'express';
 import { createData, createDataForLoop } from './logic/dataHandler';
 
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 app.listen(port);
 console.log("server listening to port: ", port);
