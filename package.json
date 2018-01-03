@@ -2,9 +2,11 @@
   "name": "cryptoprices-fetcher-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js",
+    "build": "babel app -d dist",
+    "start": "nodemon --exec babel-node app/index.js",
+    "start:prod": "nodemon ./dist/index.js",
     "debug": "npm start -- --inspect"
   },
   "author": "Mark Khotin",
