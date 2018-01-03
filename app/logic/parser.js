@@ -1,7 +1,6 @@
 import {readFileSync, writeFileSync, createReadStream, createWriteStream} from 'fs';
 import {set} from 'lodash';
 import { decodeStream, encodeStream } from 'iconv-lite';
-import path from 'path';
 import {
   CRYPTOS_ID_ARRAY,
   CURRENCIES_OBJECT,
@@ -22,7 +21,7 @@ const splitFileToMatrix = (filePath) => {
   encodingParser.on('data', (chunk) => fileData += chunk.toString());
   return new Promise((resolve, reject) => {
     encodingParser.on('finish', () => resolve(handleFile(fileData)));
-    createReadStream(path.join(__dirname, '..', filePath))
+    createReadStream(filePath)
       .pipe(decodingParser)
       .pipe(encodingParser);
   })
