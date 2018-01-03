@@ -30,8 +30,6 @@ export const createData = (resObject) => {
         const pairsDataArray = buildExchangePairs(dataArray);
       // Sending pairs to client
       resObject.send(pairsDataArray);
-
-      file.close();  // close() is async, call cb after close completes.
     });
   }).on('error', function (err) { // Handle errors
     unlink(DATA_PATH); // Delete the file async. (But we don't check the result)
@@ -52,8 +50,6 @@ export const createDataForLoop = () => {
       const dataArray = await parseRatesFile();
       // Sorting and building pairs
       const pairsDataArray = buildExchangePairs(dataArray);
-
-      file.close();  // close() is async, call cb after close completes.
     });
   }).on('error', function (err) { // Handle errors
     unlink(DATA_PATH); // Delete the file async. (But we don't check the result)
