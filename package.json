@@ -1,7 +1,7 @@
 {
   "name": "cryptoprices-fetcher-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "first app ever",
   "main": "dist/index.js",
   "scripts": {
     "build": "babel app -d dist",
