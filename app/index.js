@@ -14,6 +14,10 @@ app.use((req, res, next) => {
   next();
 });
 /////////////////////////////////////////////////////////////////////////
+app.get('/', (req, res) => {
+  res.send('Hello to Cryptoprices Fetcher!');
+});
+
 app.get('/data', (req, res) => {
   createData(res);
 });

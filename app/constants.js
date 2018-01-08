@@ -19,15 +19,13 @@ export const ID_XRP = '161';
 export const ID_ZEC = '162';
 export const ID_BCH = '172';
 export const CRYPTOS_ID_ARRAY = [
-  ID_ETH, ID_LTC, ID_DASH, ID_XMR, ID_XRP, ID_ZEC, ID_BCH
+  ID_ETH, ID_LTC, ID_DASH, ID_ZEC, ID_BCH
 ];
 export const CURRENCIES_OBJECT = {
   [ID_ADV_USD]: 'Advanced Cash $',
   [ID_LTC]: 'Litecoin',
   [ID_ETH]: 'Etherium',
   [ID_DASH]: 'Dash',
-  [ID_XMR]: 'Monero',
-  [ID_XRP]: 'Ripple',
   [ID_ZEC]: 'ZCash',
   [ID_BCH]: 'BitcoinCash',
 };
