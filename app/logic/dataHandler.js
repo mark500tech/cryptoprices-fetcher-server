@@ -131,7 +131,7 @@ Difference: ${difference}
 Buy for: ${firstStep.send}
 Exchange: ${firstStep.exchange}
 Reserve: ${firstStep.reserve}
-____________________________________
+__________________________________
 
 Sell for: ${secondStep.receive}
 Exchange: ${secondStep.exchange}
