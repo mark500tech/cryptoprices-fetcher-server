@@ -2,6 +2,7 @@ import {get} from 'http';
 import {createWriteStream, unlink} from 'fs';
 import AdmZip from 'adm-zip';
 import {sortBy} from 'lodash';
+import TelegramBot from 'node-telegram-bot-api';
 
 import {parseRatesFile} from "./parser";
 
@@ -11,7 +12,8 @@ import {
   DOWNLOAD_DATA_URL,
   ID_ADV_USD,
   MIN_USD_EXHANGE_SUM,
-  CRYPTOS_ID_ARRAY
+  CRYPTOS_ID_ARRAY,
+  TELEGRAM_TOKEN, CHAT_ID
 } from "../constants";
 
 export const createData = (resObject) => {
@@ -123,9 +125,22 @@ export const buildExchangePairs = (dataArray) => {
     const difference = parseFloat(((secondStep.receive - firstStep.send) / firstStep.send * 100).toFixed(2));
 
     if (difference > 0) {
-      console.log(`Exchange found!
-      Buy: ${firstStep.to} price: ${firstStep.send} exchange: ${firstStep.exchange}
-      Sell: ${secondStep.from} price: ${secondStep.receive} exchange: ${secondStep.exchange}`);
+      const message = `
+++++++${firstStep.to}++++++
+Difference: ${difference}      
+Buy for: ${firstStep.send}
+Exchange: ${firstStep.exchange}
+Reserve: ${firstStep.reserve}
+____________________________________
+
+Sell for: ${secondStep.receive}
+Exchange: ${secondStep.exchange}
+Reserve: ${secondStep.reserve}`;
+      console.log(message);
+
+      // Create a bot that uses 'polling' to fetch new updates
+      const bot = new TelegramBot(TELEGRAM_TOKEN, {polling: false});
+      bot.sendMessage(CHAT_ID, message);
     }
 
     pairs.push({firstStep, secondStep, difference});
