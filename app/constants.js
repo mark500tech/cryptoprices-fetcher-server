@@ -7,6 +7,7 @@ export const CURRENCIES_PATH = `${DATA_FOLDER}/bm_cy.dat`;
 export const EXCHANGES_PATH = `${DATA_FOLDER}/bm_exch.dat`;
 export const RATES_PATH = `${DATA_FOLDER}/bm_rates.dat`;
 export const MIN_USD_EXHANGE_SUM = 100;
+export const MIN_USD_PROFIT = 10;
 export const TELEGRAM_TOKEN = '470037127:AAGQcTRM_gLFzJCKylkXC-zp-LFhgWVPSHY';
 export const CHAT_ID = '273626142';
 
