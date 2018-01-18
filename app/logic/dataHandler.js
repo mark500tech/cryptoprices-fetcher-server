@@ -13,7 +13,9 @@ import {
   ID_ADV_USD,
   MIN_USD_EXHANGE_SUM,
   CRYPTOS_ID_ARRAY,
-  TELEGRAM_TOKEN, CHAT_ID
+  TELEGRAM_TOKEN,
+  CHAT_ID,
+  MIN_USD_PROFIT
 } from "../constants";
 
 export const createData = (resObject) => {
@@ -123,11 +125,17 @@ export const buildExchangePairs = (dataArray) => {
     const secondStep = getFirstItemWithNeededReserve(arraysObject.send);
     // Difference in percents after buying crypto and selling
     const difference = parseFloat(((secondStep.receive - firstStep.send) / firstStep.send * 100).toFixed(2));
+    // Maximal potential profit
+    const maxProfit = Math.min(firstStep.reserve * firstStep.send, secondStep.reserve) * difference / 100;
 
-    if (difference > 0) {
+    // If difference >= 1% (so on every 1000$ there is at least 10$ profit)
+    // and maximal possible profit >= minimal wanted profit for operation
+    if (difference >= 1 && maxProfit >= MIN_USD_PROFIT) {
       const message = `
 ++++++${firstStep.to}++++++
-Difference: ${difference}      
+Maximal possible profit: ${maxProfit}$
+Difference: ${difference}%   
+ 
 Buy for: ${firstStep.send}
 Exchange: ${firstStep.exchange}
 Reserve: ${firstStep.reserve}
