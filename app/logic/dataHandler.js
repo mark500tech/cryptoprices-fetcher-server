@@ -133,7 +133,7 @@ export const buildExchangePairs = (dataArray) => {
     if (difference >= 1 && maxProfit >= MIN_USD_PROFIT) {
       const message = `
 ++++++${firstStep.to}++++++
-Maximal possible profit: ${maxProfit}$
+Maximal possible profit: ${parseFloat(maxProfit).toFixed(2)}$
 Difference: ${difference}%   
  
 Buy for: ${firstStep.send}
