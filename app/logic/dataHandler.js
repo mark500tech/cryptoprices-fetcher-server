@@ -130,7 +130,8 @@ export const buildExchangePairs = (dataArray) => {
 
     // If difference >= 1% (so on every 1000$ there is at least 10$ profit)
     // and maximal possible profit >= minimal wanted profit for operation
-    if (difference >= 1 && maxProfit >= MIN_USD_PROFIT) {
+    // and difference shouldn't be too big, because it says that the data came wrong
+    if (difference >= 1 && maxProfit >= MIN_USD_PROFIT && difference <= 20) {
       const message = `
 ++++++${firstStep.to}++++++
 Maximal possible profit: ${parseFloat(maxProfit).toFixed(2)}$
